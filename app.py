@@ -12,8 +12,15 @@ def home():
 ## API 역할을 하는 부분
 @app.route('/curation', methods=['GET'])
 def curation_get():
-    weather_receive = request.args.get('title_give')
-    print(title_receive)
+    gender_receive = request.args.get('gender_give')
+    tone_receive = request.args.get('tone_give')
+    tpo_receive = request.args.get('tpo_give')
+
+    print(gender_receive,tone_receive, tpo_receive)
+
+
+
+
     return jsonify({'result': 'success', 'msg': '이 요청은 GET!'})
 
 

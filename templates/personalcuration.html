@@ -42,7 +42,7 @@
             margin: auto;
         }
 
-        .btn-receive{
+        .btn-receive {
             display: flex;
             justify-content: center;
         }
@@ -73,6 +73,27 @@
 
     </style>
 
+    <script>
+        function getCuration() {
+            let gender = '여성';
+            let tone = '여름뮤트';
+            let tpo = '비즈니스';
+
+            $.ajax({
+                type: "GET",
+                url: `/curation?gender_give=${gender}&tone_give=${tone}&tpo_give=${tpo}`,
+                data: {},
+                success: function (response) {
+                    if (response["result"] == "success") {
+                        console.log(response);
+                        alert(response);
+                    }// 성공하면
+                }
+            })
+        }
+
+    </script>
+
   </head>
   <body>
     <div class="list-group">
@@ -84,22 +105,34 @@
       </h3>
     </a>
     <div class="wrap">
-      <a class="list-group-item list-group-item-action">날씨</a>
-      <a class="list-group-item list-group-item-action">퍼스널컬러</a>
-      <div class="input-group-prepend">
-        <div class="input-group-text">
-          <input type="checkbox" aria-label="Checkbox for following text input">여름뮤트
+      <a id="weather" class="list-group-item list-group-item-action">날씨</a>
+      <div>
+        <a class="list-group-item list-group-item-action">성별</a>
+        <div class="input-group-prepend">
+          <div class="input-group-text">
+            <input type="checkbox" aria-label="Checkbox for following text input" id="gender">여성
+          </div>
         </div>
       </div>
-      <a class="list-group-item list-group-item-action">상황</a>
-      <div class="input-group-prepend">
-        <div class="input-group-text">
-          <input type="checkbox" aria-label="Checkbox for following text input">비즈니스
+      <div>
+        <a class="list-group-item list-group-item-action">퍼스널컬러</a>
+        <div class="input-group-prepend">
+          <div class="input-group-text">
+            <input type="checkbox" aria-label="Checkbox for following text input" id="tone">여름뮤트
+          </div>
+        </div>
+      </div>
+      <div>
+        <a class="list-group-item list-group-item-action">상황</a>
+        <div class="input-group-prepend">
+          <div class="input-group-text">
+            <input type="checkbox" aria-label="Checkbox for following text input" id="tpo">비즈니스
+          </div>
         </div>
       </div>
     </div>
     <div class="btn-receive">
-      <button class="btn btn-dark">큐레이션받기</button>
+      <button onclick="getCuration()" class="btn btn-dark">큐레이션받기</button>
     </div>
     <div class="wrap">
       <div class="card">
