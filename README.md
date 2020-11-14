@@ -1,46 +1,45 @@
 <img src="https://user-images.githubusercontent.com/17819874/79853717-5db2f900-8403-11ea-99ba-ed0bb3cdb9ef.png" height="100"/>
 
-# R-commerce
-[![made-with-Markdown](https://img.shields.io/badge/Made%20with-Markdown-1f425f.svg)](http://commonmark.org)
-[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/ohahohah/readme-template/graphs/commit-activity) 
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
-
+# personal curation
 
 
 > 프로젝트 간략 소개 한 문장 
-- 웹사이트 url / (챗봇일 경우)텔레그램 등 메신저 주소
-- 상품명 검색 -> 상품 구매한 사람들의 리뷰 -> 마음에 드는 리뷰 링크 타고 들어가 구매 
+- 성별, 피부톤, 상황별로 코디 큐레이션 해주는 서비스입니다.
 
 ## 핵심 기능  Key Feature
-- (예시) 실시간 지역별 날씨에 맞는 옷차림 정보를 알려줍니다.
-- (예시) 미세먼지 정보를 파악할 수 있습니다.
+- 자신의 현재 T.P.O를 고려하여 직관적으로 조건을 선택하면, 쿠팡의 상품 콘텐츠 중 적합한 것들만
+선별하여 제안합니다. 제목 누르면 해당 상세 페이지로 넘어가도록 구현했습니다.
 
-## 사용 How To Use
-- 사용하고 싶도록 유용한 몇 가지 예를 적습니다. 코드 블록과 스크린샷 포함.
-- (wiki가 있을 경우) _더 많은 예시와 사용 예제는 [Wiki](wiki)를 참고하세요._
-![](header.png)
+## 기술 설명(서버)
+- 기본적으로 함께 학습했던 기술들 활용해 진행하였습니다.
+- import requests
+from flask import Flask, render_template, jsonify, request
+from bs4 import BeautifulSoup
+from pymongo import MongoClient
+- 추가적으로 데이터양이 방대하여 schedule 패키지를 통해, 서버에서 매일 1am에 자동적으로 크롤링 진행하도록 했습니다.
+- import schedule
+from jobs import job_at_everyday_1am
 
-## Contributing
-*(프로젝트 기여자가 있을 경우 적습니다)*
-- Thanks to @기여자이름
+## 기술 설명(프론트)
+- radio 타입의 인풋박스 사용했습니다. 함수 적용할 때, 데이터 값 받아오는 방식 첨부!
+-             let gender = $('input[name="gender"]:checked').val();
+            let tone = $('input[name="tone"]:checked').val();
+            let keyword = $('input[name="keyword"]:checked').val();
 
-## Reference
-*(참고 리소스,  code snippet, 라이센스 정보를 표기합니다)*
-- (예시) [네이버 지도 API](링크url) : 장소카드 지도화면에 사용
-- (예시) [Teachable Machine](https://teachablemachine.withgoogle.com/) : 절하는 pose MachineLearning Model 
+## 어려웠던 점 & 극복 방법
+- 어려웠던 점 : A to Z.. 다 어려웠습니다.. 특히 어려웠던 점은 서버에서 원하는 규칙을 지정하는 과정(각 조건에 맞는 값 가져오게 정하는거!)이었습니다.
+- 극복 방법 : 구글링으로 해결해보려고 노력했지만.. 삽질만 되어서^^..바로바로 튜터님께 질문해서 해결 가능했습니다!! 감사합니다 >< 
+- 또, 금요일에 본진가서 막히는 부분 여쭤본 것도 큰 도움이 되었어요!
 
-## Links
-*(사람이 읽기 쉽게 요약된 링크 정보를 추가합니다. 현재 리포지토리의 정보를 적습니다)*
-- Project homepage: (예시) https://yourname.github.io/github-tutorial/
-- Repository: (예시) https://github.com/ohahohah/github-tutorial
-- 관련 프로젝트
-  - 프로젝트 이름 : (예시) https://github.com/ohahohah/readme-template
-  - 프로젝트 이름: (예시) https://github.com/someones/awesome-project/
+## 8주간의 코딩 첫걸음 후기
+**
+-  초반만 해도 이 언어들이, 어디서 어떻게 사용되는거지 이해가 안되었는데 계속 부딪히며 진행하고, 특히 개인 프로젝트를 진행하면서 거시적인 서버와 프론트의 흐름을 알 수 있어 좋았습니다.
+- 상상했던 서비스를 직접 구현해볼 수 있다는 점이 너무 신기했어요!! 
+- 물론 아직 넘어야할 산이 많지만.. 이후에도 완성을 위해 쭉 나아갈 예정입니다!!
 
-## License
-*(공동작업자가 있을 경우 모두 적어줍니다)*  
-이름1 – [이메일 주소1](mailto:이메일주소@example.com)  
-이름2 - [이메일 주소2](mailto:이메일주소@example.com)  
+## 남은 과정
+- 두번째 탭은 상품 검색하면 그것에 대한 리뷰를 보여주고, 해당 상품 상세페이지로 넘어가게 하는 것인데 .. 여기서 추가적으로 selenium 활용하여 크롤링하고 있습니다.. 잘 안되어서 계속 삽질해보아야할 거 같은데 이 탭까지 완성해서 퍼스널 큐레이션 탭과 한데 모으는 것이 최종 목표입니다!! 
+- p.s. 튜터님,,, 연락 받으셔야해요,,?☆
 
-XYZ license를 준수합니다. ``LICENSE``에서 자세한 정보를 확인할 수 있습니다.  
-(예시) [https://github.com/yourname/github-link/LICENSE.md](https://github.com/ohahohah/)
+## License 
+김미화 – [alghk0528@naver.com]

@@ -2,11 +2,15 @@
 <html lang="ko">
   <head>
     <!-- Webpage Title -->
-    <title>당신의 코디 고민 해결사</title>
+    <title>코디 큐레이션: 리뷰 커머스</title>
 
     <!-- Required meta tags -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <meta property="og:title" content="퍼스널 코디 큐레이션"/>
+    <meta property="og:description" content="피부톤과 상황에 맞는 코디를 큐레이션해드립니다."/>
+    <meta property="og:image" content="{{ url_for('static', filename='colorpalette.jpg') }}"/>
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
@@ -75,21 +79,77 @@
 
     <script>
         function getCuration() {
-            let gender = '여성';
-            let tone = '여름뮤트';
-            let tpo = '비즈니스';
+            let gender = $('input[name="gender"]:checked').val();
+            let tone = $('input[name="tone"]:checked').val();
+            let keyword = $('input[name="keyword"]:checked').val();
+
+            console.log(gender, tone, keyword);
 
             $.ajax({
                 type: "GET",
-                url: `/curation?gender_give=${gender}&tone_give=${tone}&tpo_give=${tpo}`,
+                url: `/curation/show?gender_give=${gender}&tone_give=${tone}&keyword_give=${keyword}`,
                 data: {},
                 success: function (response) {
                     if (response["result"] == "success") {
-                        console.log(response);
-                        alert(response);
-                    }// 성공하면
-                }
+
+                        $("#cards-box").empty();
+
+                        const products = response["products"]
+
+                        for (let i = 0; i < products.length; i++) {
+                            makeCard(products[i]["id"], products[i]["image"], products[i]["url"], products[i]["title"], products[i]["price"]);
+                        }
+                    } else {
+                        alert("큐레이션을 받아오지 못했습니다.");
+                    }
+                }// 성공하면
             })
+
+            // $.ajax({
+            //     type: "GET",
+            //     url: `/curation?gender_give=${gender}&tone_give=${tone}&tpo_give=${tpo}`,
+            //     data: {},
+            //     success: function (response) {
+            //         if (response["result"] == "success") {
+            //             console.log(response);
+            //             alert(response);
+            //             return showCard();
+            //         }// 성공하면
+            //     }
+            // })
+        }
+
+        function showCard() {
+            $.ajax({
+                type: "GET",
+                url: "/curation/show",
+                data: {},
+                success: function (response) {
+                    if (response["result"] == "success") {
+                        const products = response["products"]
+
+                        for (let i = 0; i < products.length; i++) {
+                            makeCard(products[i]["id"], products[i]["image"], products[i]["url"], products[i]["title"], products[i]["price"]);
+                        }
+                    } else {
+                        alert("큐레이션을 받아오지 못했습니다.");
+                    }
+                }// 성공하면
+            })
+        }
+
+        function makeCard(id, image, url, title, price) {
+
+            let tempHtml = ` <div class="card">
+        <img class="card-img-top"
+             src="${image}"
+             alt="Card image cap">
+        <div class="card-body">
+          <a href="https://coupang.com${url}" class="card-title">${title}</a>
+          <p class="card-text">${price}원</p>
+        </div>
+      </div>`
+            $("#cards-box").append(tempHtml);
         }
 
     </script>
@@ -99,18 +159,21 @@
     <div class="list-group">
       <p><em>Personal Curation</em></p>
     </div>
-    <a href="#" class="list-curation">
-      <h3>
-        퍼스널 큐레이션
-      </h3>
-    </a>
+
+    <h3>
+      퍼스널 큐레이션
+    </h3>
+
     <div class="wrap">
-      <a id="weather" class="list-group-item list-group-item-action">날씨</a>
+<!--      <a id="weather" class="list-group-item list-group-item-action">날씨</a>-->
       <div>
         <a class="list-group-item list-group-item-action">성별</a>
         <div class="input-group-prepend">
           <div class="input-group-text">
-            <input type="checkbox" aria-label="Checkbox for following text input" id="gender">여성
+            <input type="radio" aria-label="Checkbox for following text input" name="gender" value="woman">여성
+          </div>
+          <div class="input-group-text">
+            <input type="radio" aria-label="Checkbox for following text input" name="gender" value="man">남성
           </div>
         </div>
       </div>
@@ -118,7 +181,20 @@
         <a class="list-group-item list-group-item-action">퍼스널컬러</a>
         <div class="input-group-prepend">
           <div class="input-group-text">
-            <input type="checkbox" aria-label="Checkbox for following text input" id="tone">여름뮤트
+            <input type="radio" aria-label="Checkbox for following text input" name="tone" value="spring-warm">Spring
+            Warm
+          </div>
+          <div class="input-group-text">
+            <input type="radio" aria-label="Checkbox for following text input" name="tone" value="summer-cool">Summer
+            Cool
+          </div>
+          <div class="input-group-text">
+            <input type="radio" aria-label="Checkbox for following text input" name="tone" value="autumn-warm">Autumn
+            Warm
+          </div>
+          <div class="input-group-text">
+            <input type="radio" aria-label="Checkbox for following text input" name="tone" value="winter-cool">Winter
+            Cool
           </div>
         </div>
       </div>
@@ -126,7 +202,19 @@
         <a class="list-group-item list-group-item-action">상황</a>
         <div class="input-group-prepend">
           <div class="input-group-text">
-            <input type="checkbox" aria-label="Checkbox for following text input" id="tpo">비즈니스
+            <input type="radio" aria-label="Checkbox for following text input" name="keyword" value="business">비즈니스
+          </div>
+          <div class="input-group-text">
+            <input type="radio" aria-label="Checkbox for following text input" name="keyword" value="blind-date">소개팅
+          </div>
+          <div class="input-group-text">
+            <input type="radio" aria-label="Checkbox for following text input" name="keyword" value="meet-friends">친구
+          </div>
+          <div class="input-group-text">
+            <input type="radio" aria-label="Checkbox for following text input" name="keyword" value="school">학교
+          </div>
+          <div class="input-group-text">
+            <input type="radio" aria-label="Checkbox for following text input" name="keyword" value="traveling">여행
           </div>
         </div>
       </div>
@@ -134,17 +222,7 @@
     <div class="btn-receive">
       <button onclick="getCuration()" class="btn btn-dark">큐레이션받기</button>
     </div>
-    <div class="wrap">
-      <div class="card">
-        <img class="card-img-top"
-             src="https://www.eurail.com/content/dam/images/eurail/Italy%20OCP%20Promo%20Block.adaptive.767.1535627244182.jpg"
-             alt="Card image cap">
-        <div class="card-body">
-          <a href="#" class="card-title">여기 기사 제목이 들어가죠</a>
-          <p class="card-text">기사의 요약 내용이 들어갑니다. 동해물과 백두산이 마르고 닳도록 하느님이 보우하사 우리나라만세 무궁화 삼천리 화려강산...</p>
-          <p class="card-text comment">여기에 코멘트가 들어갑니다.</p>
-        </div>
-      </div>
+    <div id="cards-box" class="card-columns">
     </div>
   </body>
 </html>
